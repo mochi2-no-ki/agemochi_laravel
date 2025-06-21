@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserLogin extends Model
+class UserLogin extends Authenticatable
 {
     // 対応テーブル名
     protected $table = 'user_login';
@@ -25,6 +25,11 @@ class UserLogin extends Model
         'password',
         'created_at',
         'updated_at',
+    ];
+
+    // 自動変換
+    protected $casts = [
+        'password' => 'hashed',
     ];
 
     /**
