@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RealtimeRoutine extends Model
 {
@@ -52,5 +53,10 @@ class RealtimeRoutine extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(RealtimeStatus::class, 'realtime_status_id', 'realtime_status_id');
+    }
+
+    public function participants(): HasMany
+    {
+        return $this->hasMany(RealtimeRoutineParticipant::class, 'realtime_routine_id', 'realtime_routine_id');
     }
 }

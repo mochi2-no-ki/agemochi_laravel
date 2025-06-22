@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RealtimeStatus extends Model
@@ -26,4 +27,9 @@ class RealtimeStatus extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function realtimeRoutines(): HasMany
+    {
+        return $this->hasMany(RealtimeRoutine::class, 'realtime_status_id', 'realtime_status_id');
+    }
 }

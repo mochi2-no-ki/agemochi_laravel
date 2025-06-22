@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 
 class UserAccount extends Model
@@ -28,6 +30,51 @@ class UserAccount extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function userLogin(): HasOne
+    {
+        return $this->hasOne(UserLogin::class, 'user_id', 'user_id');
+    }
+
+    public function userSave(): HasOne
+    {
+        return $this->hasOne(UserSave::class, 'user_id', 'user_id');
+    }
+
+    public function routine(): HasMany
+    {
+        return $this->hasMany(Routine::class, 'user_id', 'user_id');
+    }
+
+    public function routineSaves(): HasMany
+    {
+        return $this->hasMany(RoutineSave::class, 'user_id', 'user_id');
+    }
+
+    public function realtimeRoutineSaves(): HasMany
+    {
+        return $this->hasMany(RealtimeRoutineSave::class, 'user_id', 'user_id');
+    }
+
+    public function realtimeRoutines(): HasMany
+    {
+        return $this->hasMany(RealtimeRoutine::class, 'owner_user_id', 'user_id');
+    }
+
+    public function realtimeRoutineParticipants(): HasMany
+    {
+        return $this->hasMany(RealtimeRoutineParticipant::class, 'user_id', 'user_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'user_id', 'user_id');
+    }
+
+    public function repliedMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'reply_user_id', 'user_id');
+    }
 
     // リレーション例（あとで必要に応じて）
     // public function banner()

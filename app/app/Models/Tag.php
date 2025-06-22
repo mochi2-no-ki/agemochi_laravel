@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
@@ -24,4 +25,9 @@ class Tag extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function routineTags(): HasMany
+    {
+        return $this->hasMany(RoutineTag::class, 'tag_id', 'tag_id');
+    }
 }

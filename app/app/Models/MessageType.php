@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MessageType extends Model
 {
@@ -23,4 +24,9 @@ class MessageType extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'message_type_id', 'message_type_id');
+    }
 }
