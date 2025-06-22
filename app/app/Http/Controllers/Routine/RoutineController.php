@@ -7,18 +7,18 @@ use App\Http\Requests\Routine\ListRoutineRequest;
 use App\Http\Resources\BaseApiResponse;
 use App\Http\Resources\Routine\RoutineListResource;
 use App\Http\Resources\Routine\ShowRoutineDetailResource;
+use App\Services\Routine\RoutineListService;
 use App\Services\Routine\ShowRoutineDetailService;
-use App\Services\RoutineService;
 use Illuminate\Http\JsonResponse;
 
 class RoutineController extends Controller
 {
-    protected RoutineService $routineService;
+    protected RoutineListService $routineService;
 
     protected ShowRoutineDetailService $showRoutineDetailService;
 
     public function __construct(
-        RoutineService $routineService,
+        RoutineListService $routineService,
         ShowRoutineDetailService $showRoutineDetailService
     ) {
         $this->routineService = $routineService;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Routine;
 
 use App\Repositories\RoutineRepository;
 
-class RoutineService
+class RoutineListService
 {
     protected RoutineRepository $routineRepository;
 
