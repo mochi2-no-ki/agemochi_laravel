@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Routine\RoutineController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,9 @@ Route::middleware('api')->group(function () {
     Route::prefix('routine')->group(function () {
         Route::get('/list', [RoutineController::class, 'list']);
     });
+
+    // ユーザー簡易プロフィール取得（GET /api/user/{mochi_id}）
+    Route::get('/user/{mochi_id}', [UserController::class, 'showSimpleProfile']);
 
     /*
     |--------------------------------------------------------------------------
