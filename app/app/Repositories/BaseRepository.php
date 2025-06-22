@@ -64,4 +64,14 @@ class BaseRepository
 
         return $record ? $record->delete() : false;
     }
+
+    /**
+     * モデルのクエリビルダを返す（条件追加のための基点）
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function baseQuery()
+    {
+        return $this->model->newQuery();
+    }
 }
