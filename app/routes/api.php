@@ -25,9 +25,11 @@ Route::middleware('api')->group(function () {
     // ログイン処理（POST /api/login）
     Route::post('/login', [LoginController::class, 'login']);
 
-    // ルーティーン一覧取得（GET /api/routine/list）テスト用
     Route::prefix('routine')->group(function () {
+        // ルーティーン一覧取得（GET /api/routine/list）テスト用
         Route::get('/list', [RoutineController::class, 'list']);
+        // ルーティーン詳細取得（GET /api/routine/{routine_id}/detail）テスト用
+        Route::get('/{routine_id}/detail', [RoutineController::class, 'showDetail']);
     });
 
     // ユーザー簡易プロフィール取得（GET /api/user/{mochi_id}）

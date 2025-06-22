@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Routine\ListRoutineRequest;
 use App\Http\Resources\BaseApiResponse;
 use App\Http\Resources\Routine\RoutineListResource;
+use App\Http\Resources\Routine\ShowRoutineDetailResource;
+use App\Services\Routine\ShowRoutineDetailService;
 use App\Services\RoutineService;
 use Illuminate\Http\JsonResponse;
 
@@ -13,9 +15,14 @@ class RoutineController extends Controller
 {
     protected RoutineService $routineService;
 
-    public function __construct(RoutineService $routineService)
-    {
+    protected ShowRoutineDetailService $showRoutineDetailService;
+
+    public function __construct(
+        RoutineService $routineService,
+        ShowRoutineDetailService $showRoutineDetailService
+    ) {
         $this->routineService = $routineService;
+        $this->showRoutineDetailService = $showRoutineDetailService;
     }
 
     /**
@@ -27,6 +34,30 @@ class RoutineController extends Controller
 
         // 各ルーティーンを整形
         $data = RoutineListResource::collection($routines);
+
+        return response()->json(new BaseApiResponse([
+            'code' => 200,
+            'message' => 'OK',
+            'data' => $data,
+        ]));
+    }
+
+    /**
+     * ルーティーン詳細取得API
+     */
+    public function showDetail(string $routineId): JsonResponse
+    {
+        $routine = $this->showRoutineDetailService->getDetailById($routineId);
+
+        if (! $routine) {
+            return response()->json(new BaseApiResponse([
+                'code' => 404,
+                'message' => '指定されたルーティーンが見つかりません。',
+                'data' => null,
+            ]), 404);
+        }
+
+        $data = new ShowRoutineDetailResource($routine);
 
         return response()->json(new BaseApiResponse([
             'code' => 200,
