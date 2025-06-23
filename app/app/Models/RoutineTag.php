@@ -15,6 +15,8 @@ class RoutineTag extends Model
 
     protected $keyType = 'string';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'routine_tag_id',
         'routine_id',

@@ -15,4 +15,13 @@ class RoutineTagRepository extends BaseRepository
     }
 
     // 必要であればRoutineTag特有の処理をここに追加
+    /**
+     * 指定されたルーティーンIDに紐づく routine_tag をすべて削除する
+     */
+    public function deleteAllByRoutineId(string $routineId): void
+    {
+        $this->baseQuery()
+            ->where('routine_id', $routineId)
+            ->delete();
+    }
 }

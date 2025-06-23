@@ -30,6 +30,8 @@ Route::middleware('api')->group(function () {
         Route::get('/list', [RoutineController::class, 'list']);
         // ルーティーン詳細取得（GET /api/routine/{routine_id}/detail）テスト用
         Route::get('/{routine_id}/detail', [RoutineController::class, 'showDetail']);
+        // ルーティーン投稿（POST /api/routine/create）テスト用
+        Route::post('/create', [RoutineController::class, 'create']);
     });
 
     // ユーザー簡易プロフィール取得（GET /api/user/{mochi_id}）
