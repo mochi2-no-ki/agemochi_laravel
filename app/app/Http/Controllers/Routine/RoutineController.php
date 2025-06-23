@@ -82,6 +82,9 @@ class RoutineController extends Controller
         return response()->json(new BaseApiResponse([
             'code' => 200,
             'message' => 'OK',
+            'data' => [
+                'routine_id' => $routine->routine_id,
+            ],
         ]));
     }
 }
