@@ -15,4 +15,9 @@ Route::prefix('web')->group(function () {
     Route::get('/test_public_chat', function () {
         return view('test_public_chat');
     });
+
+    // ✅ 個別チャット画面ルートを追加
+    Route::get('/test_private_chat', function () {
+        return view('test_private_chat');
+    });
 });
