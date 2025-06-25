@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\RealtimeRoutine\RaiseHandController;
 use App\Http\Controllers\Routine\RoutineController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
@@ -32,6 +33,11 @@ Route::middleware('api')->group(function () {
         Route::get('/{routine_id}/detail', [RoutineController::class, 'showDetail']);
         // ルーティーン投稿（POST /api/routine/create）テスト用
         Route::post('/create', [RoutineController::class, 'create']);
+    });
+
+    Route::prefix('rr')->group(function () {
+        // 挙手通知（POST /api/rr/{realtime_routine_id}/raise-hand）
+        Route::post('/{realtime_routine_id}/raise-hand', [RaiseHandController::class, 'raiseHand']);
     });
 
     // ユーザー簡易プロフィール取得（GET /api/user/{mochi_id}）
