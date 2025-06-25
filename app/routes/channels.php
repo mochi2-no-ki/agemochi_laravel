@@ -10,3 +10,8 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('test_channel', function () {
     return true;
 });
+
+// ✅ PublicChatMessage 用のチャンネル認可（public チャンネルのため true でOK）
+Broadcast::channel('test_public_chat', function () {
+    return true;
+});

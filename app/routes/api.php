@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RealtimeRoutine\RaiseHandController;
 use App\Http\Controllers\Routine\RoutineController;
+use App\Http\Controllers\TestPublicChatController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,12 @@ Route::middleware('api')->group(function () {
     | 認証不要ルート（ログインなど）
     |--------------------------------------------------------------------------
     */
+
+    // テスト用のソケット通信
+    Route::prefix('socket')->group(function () {
+        // テスト用の公開チャットメッセージ送信用ルート
+        Route::post('/chat/public', [TestPublicChatController::class, 'send']);
+    });
 
     // ログイン処理（POST /api/login）
     Route::post('/login', [LoginController::class, 'login']);
