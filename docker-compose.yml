@@ -6,6 +6,8 @@ services:
     container_name: laravel_app
     ports:
       - "8888:80" # 🔧 ここでホスト: コンテナのポートを指定
+      - "6001:6001" # ← WebSocket ポートをホストに公開
+
     volumes:
       - ./app:/var/www/html
     depends_on:
