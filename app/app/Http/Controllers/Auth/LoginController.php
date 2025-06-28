@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\UserAccount;
 use App\Models\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +22,7 @@ class LoginController extends Controller
         ]);
 
         // UserLogin から認証対象ユーザーを取得
-        $userLogin = UserLogin::where('mail', $credentials['mail'])->first();
+        $userLogin = UserLogin::where('mail', $credentials['mail'])->with('userAccount')->first();
 
         if (! $userLogin || ! Hash::check($credentials['password'], $userLogin->password)) {
             throw ValidationException::withMessages([
@@ -31,14 +30,17 @@ class LoginController extends Controller
             ]);
         }
 
-        // UserAccount を取得（リレーション経由でも可）
-        $userAccount = UserAccount::findOrFail($userLogin->user_id);
+        // UserAccount を取得（リレーション経由）
+        $userAccount = $userLogin->userAccount;
 
         // トークン発行（token 名は "login" などでOK）
-        $token = $userAccount->createToken('login');
+        $token = $userLogin->createToken('login');
 
         return response()->json([
             'token' => $token->plainTextToken,
+            'user_id' => $userAccount->user_id,
+            'mochi_id' => $userAccount->mochi_id,
+            'user_name' => $userAccount->user_name,
         ]);
     }
 

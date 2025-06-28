@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\UserLogin;
 use Illuminate\Support\Facades\Broadcast;
 
+// ユーザー自身のIDに対する公開チャンネル認可
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
@@ -23,8 +25,23 @@ Broadcast::channel('test_private_chat.{userId}', function () {
 });
 
 // 将来的に private チャンネルへ移行する場合（認証あり）
-/*
-Broadcast::channel('test_private_chat.{userId}', function ($user, $userId) {
-    return (string) $user->id === (string) $userId;
+// Broadcast::channel('test_private_chat.{userId}', function ($user, $userId) {
+//     return (string) $user->id === (string) $userId;
+// });
+
+// ✅ Presence チャンネル（ログイン済みユーザーのみ参加可）
+// $user は Sanctum 経由で認証された UserLogin モデル
+Broadcast::channel('test_presence_chat', function (UserLogin $userLogin) {
+    $account = $userLogin->userAccount;
+
+    return [
+        'user_id' => $account->user_id,
+        'mochi_id' => $account->mochi_id,
+        'user_name' => $account->user_name,
+    ];
 });
-*/
+
+// ✅ TestPresenceChat 用 private チャンネル（個別チャット用）
+Broadcast::channel('test_presence_chat.{mochiId}', function (UserLogin $userLogin, string $mochiId) {
+    return $userLogin->userAccount->mochi_id === $mochiId;
+});

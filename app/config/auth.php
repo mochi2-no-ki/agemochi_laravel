@@ -38,7 +38,7 @@ return [
     'guards' => [
         'sanctum' => [
             'driver' => 'sanctum',
-            'provider' => 'user_accounts',
+            'provider' => 'user_logins',
         ],
     ],
 

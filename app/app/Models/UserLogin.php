@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class UserLogin extends Authenticatable
 {
+    use HasApiTokens;
+
     // 対応テーブル名
     protected $table = 'user_login';
 

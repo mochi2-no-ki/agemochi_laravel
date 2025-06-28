@@ -20,4 +20,14 @@ Route::prefix('web')->group(function () {
     Route::get('/test_private_chat', function () {
         return view('test_private_chat');
     });
+
+    // ✅ Presence チャット画面ルートを追加
+    Route::get('/test_presence_chat', function () {
+        return view('test_presence_chat');
+    });
+
+    // ✅ Presence チャットログイン画面ルートを追加
+    Route::get('/test_presence_login', function () {
+        return view('test_login');
+    });
 });
