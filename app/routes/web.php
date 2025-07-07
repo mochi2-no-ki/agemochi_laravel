@@ -6,4 +6,28 @@ Route::prefix('web')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    Route::get('/test_echo', function () {
+        return view('test_echo');
+    });
+
+    // ✅ 公開チャット画面ルートを追加
+    Route::get('/test_public_chat', function () {
+        return view('test_public_chat');
+    });
+
+    // ✅ 個別チャット画面ルートを追加
+    Route::get('/test_private_chat', function () {
+        return view('test_private_chat');
+    });
+
+    // ✅ Presence チャット画面ルートを追加
+    Route::get('/test_presence_chat', function () {
+        return view('test_presence_chat');
+    });
+
+    // ✅ Presence チャットログイン画面ルートを追加
+    Route::get('/test_presence_login', function () {
+        return view('test_login');
+    });
 });

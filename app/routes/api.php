@@ -3,8 +3,13 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RealtimeRoutine\RaiseHandController;
 use App\Http\Controllers\Routine\RoutineController;
+use App\Http\Controllers\TestPresenceChatController;
+use App\Http\Controllers\TestPresenceChatLogController;
+use App\Http\Controllers\TestPrivateChatController;
+use App\Http\Controllers\TestPublicChatController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +27,14 @@ Route::middleware('api')->group(function () {
     | 認証不要ルート（ログインなど）
     |--------------------------------------------------------------------------
     */
+
+    // テスト用のソケット通信
+    Route::prefix('socket')->group(function () {
+        // テスト用の公開チャットメッセージ送信用ルート
+        Route::post('/chat/public', [TestPublicChatController::class, 'send']);
+        // テスト用の個別チャットメッセージ送信用ルート
+        Route::post('/chat/private', TestPrivateChatController::class);
+    });
 
     // ログイン処理（POST /api/login）
     Route::post('/login', [LoginController::class, 'login']);
@@ -63,5 +76,29 @@ Route::middleware('api')->group(function () {
         // });
 
         // 今後、認証必須のAPIはここに追加
+
+        Route::prefix('auth_socket')->group(function () {
+            // テスト用の presence チャット送信用ルート
+            Route::post('/chat/presence', [TestPresenceChatController::class, 'send']);
+            // チャット履歴取得
+            Route::get('/chat/presence/log', [TestPresenceChatLogController::class, 'getLog']);
+        });
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Broadcasting Routes (認証付き Presence Channel 用)
+|--------------------------------------------------------------------------
+*/
+Broadcast::routes([
+    'middleware' => ['auth:sanctum'],
+]);
+
+Broadcast::channel('presence.test_presence_chat', function ($user) {
+    return [
+        'user_id' => $user->user_id,
+        'mochi_id' => $user->mochi_id,
+        'user_name' => $user->user_name,
+    ];
 });
