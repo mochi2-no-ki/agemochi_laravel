@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RealtimeRoutine\RaiseHandController;
 use App\Http\Controllers\Routine\RoutineController;
+use App\Http\Controllers\Tag\TagController;
 use App\Http\Controllers\TestPresenceChatController;
 use App\Http\Controllers\TestPresenceChatLogController;
 use App\Http\Controllers\TestPrivateChatController;
@@ -55,6 +56,11 @@ Route::middleware('api')->group(function () {
 
     // ユーザー簡易プロフィール取得（GET /api/user/{mochi_id}）
     Route::get('/user/{mochi_id}', [UserController::class, 'showSimpleProfile']);
+
+    // タグ検索API（GET /api/tag/list）
+    Route::prefix('tag')->group(function () {
+        Route::get('/list', [TagController::class, 'list']);
+    });
 
     /*
     |--------------------------------------------------------------------------
