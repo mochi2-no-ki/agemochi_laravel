@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Routine;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Routine\CreateRoutineRequest;
+use App\Http\Requests\Routine\HoldEventRequest;
 use App\Http\Requests\Routine\ListRoutineRequest;
 use App\Http\Resources\BaseApiResponse;
 use App\Http\Resources\Routine\RoutineListResource;
 use App\Http\Resources\Routine\ShowRoutineDetailResource;
+use App\Services\RealtimeRoutine\HoldEventService;
 use App\Services\Routine\CreateRoutineService;
 use App\Services\Routine\RoutineListService;
 use App\Services\Routine\ShowRoutineDetailService;
@@ -21,14 +23,18 @@ class RoutineController extends Controller
 
     protected CreateRoutineService $createRoutineService;
 
+    protected HoldEventService $holdEventService;
+
     public function __construct(
         RoutineListService $routineService,
         ShowRoutineDetailService $showRoutineDetailService,
-        CreateRoutineService $createRoutineService
+        CreateRoutineService $createRoutineService,
+        HoldEventService $holdEventService,
     ) {
         $this->routineService = $routineService;
         $this->showRoutineDetailService = $showRoutineDetailService;
         $this->createRoutineService = $createRoutineService;
+        $this->holdEventService = $holdEventService;
     }
 
     /**
@@ -84,6 +90,24 @@ class RoutineController extends Controller
             'message' => 'OK',
             'data' => [
                 'routine_id' => $routine->routine_id,
+            ],
+        ]));
+    }
+
+    /**
+     * リアルタイムルーティーン開催API
+     */
+    public function holdEvent(HoldEventRequest $request): JsonResponse
+    {
+        $input = $request->validated();
+
+        $realtimeRoutine = $this->holdEventService->holdEvent($input);
+
+        return response()->json(new BaseApiResponse([
+            'code' => 200,
+            'message' => 'OK',
+            'data' => [
+                'realtime_routine_id' => $realtimeRoutine->realtime_routine_id,
             ],
         ]));
     }

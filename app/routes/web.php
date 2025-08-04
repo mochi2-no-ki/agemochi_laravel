@@ -30,4 +30,14 @@ Route::prefix('web')->group(function () {
     Route::get('/test_presence_login', function () {
         return view('test_login');
     });
+
+    // ✅ Presence チャット画面ルートを追加
+    Route::get('/test_presence_event', function () {
+        return view('test_presence_event');
+    });
+
+    // ✅ Presence チャットログイン画面ルートを追加
+    Route::get('/test_presence_event_login', function () {
+        return view('test_presence_event_login');
+    });
 });

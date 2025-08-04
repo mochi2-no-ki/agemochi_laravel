@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\UserLogin;
+use App\Services\RealtimeRoutine\ChannelAuthService;
 use Illuminate\Support\Facades\Broadcast;
 
 // ユーザー自身のIDに対する公開チャンネル認可
@@ -43,5 +44,33 @@ Broadcast::channel('test_presence_chat', function (UserLogin $userLogin) {
 
 // ✅ TestPresenceChat 用 private チャンネル（個別チャット用）
 Broadcast::channel('test_presence_chat.{mochiId}', function (UserLogin $userLogin, string $mochiId) {
+    return $userLogin->userAccount->mochi_id === $mochiId;
+});
+
+// ✅ RealtimeRoutine Presence チャンネル認可
+Broadcast::channel('presence_realtime_routine.{realtimeRoutineId}', function (UserLogin $userLogin, string $realtimeRoutineId) {
+    $authService = app(ChannelAuthService::class);
+
+    if (! $authService->isAccessible($realtimeRoutineId)) {
+        return false;
+    }
+
+    $account = $userLogin->userAccount;
+
+    return [
+        'user_id' => $account->user_id,
+        'mochi_id' => $account->mochi_id,
+        'user_name' => $account->user_name,
+    ];
+});
+
+// ✅ RealtimeRoutine Private チャンネル認可
+Broadcast::channel('private_realtime_routine.{realtimeRoutineId}.{mochiId}', function (UserLogin $userLogin, string $realtimeRoutineId, string $mochiId) {
+    $authService = app(ChannelAuthService::class);
+
+    if (! $authService->isAccessible($realtimeRoutineId)) {
+        return false;
+    }
+
     return $userLogin->userAccount->mochi_id === $mochiId;
 });

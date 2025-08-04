@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Services\Support\UuidService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class TestDataSeeder extends Seeder
 {
@@ -30,8 +30,8 @@ class TestDataSeeder extends Seeder
         DB::table('user_account')->delete();
 
         // ユーザーアカウント（user_account）2件
-        $user1Id = (string) Str::uuid();
-        $user2Id = (string) Str::uuid();
+        $user1Id = UuidService::generateV7();
+        $user2Id = UuidService::generateV7();
 
         DB::table('user_account')->insert([
             [
@@ -97,7 +97,7 @@ class TestDataSeeder extends Seeder
         // タグ（tag）
         $tagIds = [];
         foreach (['朝活', '夜ルーティーン', '勉強', '運動', 'リラックス'] as $name) {
-            $tagId = (string) Str::uuid();
+            $tagId = UuidService::generateV7();
             $tagIds[] = $tagId;
 
             DB::table('tag')->insert([
@@ -110,8 +110,8 @@ class TestDataSeeder extends Seeder
         }
 
         // ルーティーン（routine）2件
-        $routine1Id = (string) Str::uuid();
-        $routine2Id = (string) Str::uuid();
+        $routine1Id = UuidService::generateV7();
+        $routine2Id = UuidService::generateV7();
 
         DB::table('routine')->insert([
             [
@@ -146,13 +146,13 @@ class TestDataSeeder extends Seeder
         foreach ($tagIds as $tagId) {
             DB::table('routine_tag')->insert([
                 [
-                    'routine_tag_id' => (string) Str::uuid(),
+                    'routine_tag_id' => UuidService::generateV7(),
                     'routine_id' => $routine1Id,
                     'tag_id' => $tagId,
                     'created_at' => now(),
                 ],
                 [
-                    'routine_tag_id' => (string) Str::uuid(),
+                    'routine_tag_id' => UuidService::generateV7(),
                     'routine_id' => $routine2Id,
                     'tag_id' => $tagId,
                     'created_at' => now(),
@@ -181,13 +181,13 @@ class TestDataSeeder extends Seeder
         // routine_save（保存）2件
         DB::table('routine_save')->insert([
             [
-                'routine_save_id' => (string) Str::uuid(),
+                'routine_save_id' => UuidService::generateV7(),
                 'user_id' => $user1Id,
                 'routine_id' => $routine2Id,
                 'created_at' => now(),
             ],
             [
-                'routine_save_id' => (string) Str::uuid(),
+                'routine_save_id' => UuidService::generateV7(),
                 'user_id' => $user2Id,
                 'routine_id' => $routine1Id,
                 'created_at' => now(),
@@ -197,13 +197,13 @@ class TestDataSeeder extends Seeder
         // realtime_routine_save（リアルタイム保存）2件
         DB::table('realtime_routine_save')->insert([
             [
-                'realtime_routine_save_id' => (string) Str::uuid(),
+                'realtime_routine_save_id' => UuidService::generateV7(),
                 'user_id' => $user1Id,
                 'routine_id' => $routine2Id,
                 'created_at' => now(),
             ],
             [
-                'realtime_routine_save_id' => (string) Str::uuid(),
+                'realtime_routine_save_id' => UuidService::generateV7(),
                 'user_id' => $user2Id,
                 'routine_id' => $routine1Id,
                 'created_at' => now(),
@@ -211,7 +211,7 @@ class TestDataSeeder extends Seeder
         ]);
 
         // リアルタイムステータス
-        $waitingStatusId = (string) Str::uuid();
+        $waitingStatusId = UuidService::generateV7();
         DB::table('realtime_status')->insert([
             [
                 'realtime_status_id' => $waitingStatusId,
@@ -223,8 +223,8 @@ class TestDataSeeder extends Seeder
         ]);
 
         // リアルタイムルーティーン
-        $realtimeRoutine1Id = (string) Str::uuid();
-        $realtimeRoutine2Id = (string) Str::uuid();
+        $realtimeRoutine1Id = UuidService::generateV7();
+        $realtimeRoutine2Id = UuidService::generateV7();
 
         DB::table('realtime_routine')->insert([
             [
@@ -256,13 +256,13 @@ class TestDataSeeder extends Seeder
         // 参加者（realtime_routine_participant）
         DB::table('realtime_routine_participant')->insert([
             [
-                'realtime_routine_participant_id' => (string) Str::uuid(),
+                'realtime_routine_participant_id' => UuidService::generateV7(),
                 'realtime_routine_id' => $realtimeRoutine1Id,
                 'user_id' => $user2Id,
                 'created_at' => now(),
             ],
             [
-                'realtime_routine_participant_id' => (string) Str::uuid(),
+                'realtime_routine_participant_id' => UuidService::generateV7(),
                 'realtime_routine_id' => $realtimeRoutine2Id,
                 'user_id' => $user1Id,
                 'created_at' => now(),
@@ -270,8 +270,8 @@ class TestDataSeeder extends Seeder
         ]);
 
         // メッセージタイプ
-        $type1Id = (string) Str::uuid();
-        $type2Id = (string) Str::uuid();
+        $type1Id = UuidService::generateV7();
+        $type2Id = UuidService::generateV7();
 
         DB::table('message_type')->insert([
             [
@@ -293,7 +293,7 @@ class TestDataSeeder extends Seeder
         // メッセージ
         DB::table('message')->insert([
             [
-                'message_id' => (string) Str::uuid(),
+                'message_id' => UuidService::generateV7(),
                 'realtime_routine_id' => $realtimeRoutine1Id,
                 'user_id' => $user1Id,
                 'message_type_id' => $type1Id,
@@ -302,7 +302,7 @@ class TestDataSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
-                'message_id' => (string) Str::uuid(),
+                'message_id' => UuidService::generateV7(),
                 'realtime_routine_id' => $realtimeRoutine1Id,
                 'user_id' => $user2Id,
                 'message_type_id' => $type2Id,

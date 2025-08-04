@@ -6,6 +6,8 @@ use App\Http\Controllers\Routine\RoutineController;
 use App\Http\Controllers\Tag\TagController;
 use App\Http\Controllers\TestPresenceChatController;
 use App\Http\Controllers\TestPresenceChatLogController;
+use App\Http\Controllers\TestPresenceEventController;
+use App\Http\Controllers\TestPresenceEventLogController;
 use App\Http\Controllers\TestPrivateChatController;
 use App\Http\Controllers\TestPublicChatController;
 use App\Http\Controllers\User\UserController;
@@ -47,6 +49,8 @@ Route::middleware('api')->group(function () {
         Route::get('/{routine_id}/detail', [RoutineController::class, 'showDetail']);
         // ルーティーン投稿（POST /api/routine/create）テスト用
         Route::post('/create', [RoutineController::class, 'create']);
+        // リアルタイムルーティーン開催（POST /api/routine/{routine_id}/hold_event）テスト用
+        Route::post('/{routine_id}/hold_event', [RoutineController::class, 'holdEvent']);
     });
 
     Route::prefix('rr')->group(function () {
@@ -88,6 +92,11 @@ Route::middleware('api')->group(function () {
             Route::post('/chat/presence', [TestPresenceChatController::class, 'send']);
             // チャット履歴取得
             Route::get('/chat/presence/log', [TestPresenceChatLogController::class, 'getLog']);
+
+            // テスト用の presence event送信用ルート
+            Route::post('/chat/test_presence_event', [TestPresenceEventController::class, 'send']);
+            // eventチャット履歴取得
+            Route::get('/chat/test_presence_event/log', [TestPresenceEventLogController::class, 'getLog']);
         });
     });
 });
